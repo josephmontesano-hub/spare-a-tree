@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snr. Buns | Spare-A-Tree Initiative</title>
+<style>
+  :root{
+    --forest:#123524;
+    --forest-light:#1e5c3e;
+    --leaf:#3a9b6c;
+    --cream:#faf3e2;
+    --paper:#fffaf0;
+    --bun:#fdd802;
+    --patty:#c75a00;
+    --red:#b20103;
+    --maroon:#5a0c0c;
+    --maroon-dark:#2b0605;
+    --ink:#1c1a15;
+    --muted:#6b6558;
+    --line:#e3d9c2;
+    --shadow: 0 10px 30px rgba(18,53,36,0.15);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family: Georgia, 'Times New Roman', serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.55;
+  }
+  h1,h2,h3{
+    font-family: 'Trebuchet MS', 'Segoe UI', Arial, sans-serif;
+  }
+  a{color:inherit;}
+  img,svg{display:block;max-width:100%;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+  /* NAV */
+  header.site-nav{
+    position:sticky; top:0; z-index:50;
+    background:var(--maroon-dark);
+    color:var(--cream);
+    box-shadow:0 2px 12px rgba(0,0,0,0.15);
+  }
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 24px; max-width:1080px; margin:0 auto;
+  }
+  .nav-inner.nav-centered{justify-content:center;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .brand .logo-img{height:54px;width:auto;}
+  .brand .tag{font-size:0.65rem;color:var(--bun);letter-spacing:1.5px;text-transform:uppercase;}
+
+  /* HERO */
+  .hero{
+    position:relative;
+    background: linear-gradient(180deg, var(--maroon-dark) 0%, var(--red) 100%);
+    color:var(--cream);
+    overflow:hidden;
+    padding:64px 0 40px;
+  }
+  .hero-inner{
+    max-width:1080px;margin:0 auto;padding:0 24px;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:36px; align-items:center;
+  }
+  @media (max-width:800px){ .hero-inner{grid-template-columns:1fr;} }
+  .eyebrow{
+    display:inline-block; background:rgba(250,243,226,0.12); border:1px solid rgba(250,243,226,0.35);
+    color:var(--bun); font-family:'Trebuchet MS',Arial,sans-serif; font-size:0.72rem; letter-spacing:1.5px;
+    text-transform:uppercase; padding:5px 12px; border-radius:20px; margin-bottom:18px;
+  }
+  .hero h1{font-size:2.5rem; line-height:1.15; margin:0 0 16px; color:#fff;}
+  .hero h1 em{color:var(--bun);font-style:normal;}
+  .hero h1 .sneaky{
+    display:block; font-family:'Trebuchet MS',Arial,sans-serif; font-style:italic; font-weight:400;
+    font-size:0.62rem; letter-spacing:1px; text-transform:uppercase;
+    color:rgba(250,243,226,0.4); line-height:1; margin:3px 0 5px; opacity:0.85;
+  }
+  .hero p.sub{font-size:1.05rem; color:#f4e2cf; max-width:46ch; margin:0 0 26px;}
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:'Trebuchet MS',Arial,sans-serif; font-weight:700; font-size:0.95rem;
+    padding:14px 26px; border-radius:8px; border:none; cursor:pointer;
+    text-decoration:none; display:inline-flex; align-items:center; gap:8px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{background:var(--bun); color:var(--maroon-dark); box-shadow:0 8px 20px rgba(43,6,5,0.35);}
+  .btn-ghost{background:transparent;border:1.5px solid rgba(250,243,226,0.5); color:var(--cream);}
+
+  .hero-art{width:100%; filter:drop-shadow(0 18px 30px rgba(0,0,0,0.35));}
+
+  /* SECTION GENERIC */
+  section{padding:64px 0;}
+  .section-head{max-width:640px; margin:0 auto 40px; text-align:center;}
+  .kicker{font-family:'Trebuchet MS',Arial,sans-serif; font-size:0.72rem; letter-spacing:2px; text-transform:uppercase; color:var(--red); font-weight:700;}
+  .section-head h2{font-size:1.9rem; margin:8px 0 12px; color:var(--maroon-dark);}
+  .section-head p{color:var(--muted); font-size:1rem;}
+  .section-head .quip{color:var(--red); font-weight:700; font-style:italic; font-size:0.92rem; margin-top:10px;}
+
+  /* MISSION CARDS */
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  @media (max-width:800px){ .cards{grid-template-columns:1fr;} }
+  .card{
+    background:var(--paper); border:1px solid var(--line); border-radius:14px;
+    padding:28px 24px; box-shadow:var(--shadow);
+  }
+  .card .icon{width:52px;height:52px;margin-bottom:16px;}
+  .card h3{margin:0 0 10px; font-size:1.1rem; color:var(--maroon-dark);}
+  .card p{margin:0; color:var(--muted); font-size:0.92rem;}
+
+  /* PROGRAM / DONATE */
+  .program{
+    background: linear-gradient(180deg, #fde54a 0%, var(--bun) 100%);
+    color:var(--maroon-dark);
+    position:relative;
+    overflow:hidden;
+  }
+  .program .wrap{position:relative; z-index:2;}
+  .program-grid{display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;}
+  @media (max-width:800px){ .program-grid{grid-template-columns:1fr;} }
+  .program h2{color:var(--maroon-dark); font-size:1.9rem; margin-top:0;}
+  .program p{color:var(--maroon-dark); opacity:0.85;}
+  .program .btn-primary{background:var(--red); color:#fff; box-shadow:0 8px 20px rgba(178,1,3,0.35);}
+  .counter-box{
+    background:rgba(43,6,5,0.08); border:1px solid rgba(43,6,5,0.22);
+    border-radius:14px; padding:22px 26px; margin:22px 0 26px;
+  }
+  .counter-box .num{font-family:'Trebuchet MS',Arial,sans-serif; font-size:2.4rem; font-weight:800; color:var(--red);}
+  .counter-box .lbl{font-size:0.8rem; letter-spacing:1px; text-transform:uppercase; color:var(--maroon-dark); opacity:0.7;}
+  .program-art{background:var(--forest-light); border-radius:18px; padding:20px; box-shadow:var(--shadow);}
+  .program-art img{width:100%; display:block; border-radius:10px;}
+
+  .fineprint-note{font-size:0.78rem; color:var(--maroon-dark); opacity:0.75; margin-top:14px;}
+  .fineprint-note a{color:var(--red); text-decoration:underline; cursor:pointer;}
+
+  /* TESTIMONIALS */
+  .testimonials{background:var(--paper);}
+  .t-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  @media (max-width:800px){ .t-grid{grid-template-columns:1fr;} }
+  .t-card{background:var(--cream); border:1px solid var(--line); border-radius:12px; padding:22px;}
+  .t-card p.quote{font-style:italic; color:var(--ink); margin:0 0 14px; font-size:0.95rem;}
+  .t-card .who{font-family:'Trebuchet MS',Arial,sans-serif; font-size:0.8rem; color:var(--muted); font-weight:700;}
+
+  /* FAQ */
+  .faq-item{border-bottom:1px solid var(--line); padding:18px 0;}
+  .faq-q{
+    display:flex; justify-content:space-between; align-items:center; cursor:pointer;
+    font-family:'Trebuchet MS',Arial,sans-serif; font-weight:700; color:var(--maroon-dark); font-size:1rem;
+  }
+  .faq-q .plus{transition:transform .2s;}
+  .faq-item.open .plus{transform:rotate(45deg);}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+  .faq-item.open .faq-a{max-height:600px;}
+  .faq-a p{color:var(--muted); font-size:0.92rem; margin:12px 0 0;}
+  .faq-a .legal{
+    background:var(--paper); border:1px dashed var(--line); border-radius:8px; padding:14px 16px; margin-top:12px;
+    font-family: 'Times New Roman', serif; font-size:0.78rem; color:#4b463a; line-height:1.6;
+  }
+  .legal strong{color:var(--red);}
+
+  /* FOOTER */
+  footer{background:var(--maroon-dark); color:#c2a9a1; padding:28px 0; font-size:0.8rem;}
+  .footer-inner{display:flex; justify-content:center; text-align:center;}
+
+  /* MODAL */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(10,20,14,0.72);
+    display:none; align-items:center; justify-content:center; z-index:200; padding:20px;
+  }
+  .modal-overlay.active{display:flex;}
+  .modal{
+    background:var(--paper); border-radius:16px; width:100%; max-width:420px;
+    padding:28px 26px; box-shadow:0 30px 60px rgba(0,0,0,0.4); position:relative;
+    font-family:'Trebuchet MS',Arial,sans-serif;
+  }
+  .modal-close{position:absolute; top:14px; right:16px; background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--muted);}
+  .modal h3{margin:0 0 4px; color:var(--maroon-dark); font-size:1.15rem;}
+  .modal .proc-sub{font-size:0.78rem; color:var(--muted); margin-bottom:18px;}
+  .fake-field{margin-bottom:14px;}
+  .fake-field label{display:block; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted); margin-bottom:5px;}
+  .fake-field .box{
+    border:1px solid var(--line); background:#fff; border-radius:8px; padding:11px 12px;
+    font-family:'Courier New',monospace; font-size:0.95rem; min-height:20px; color:var(--ink);
+  }
+  .fake-field .box .cursor{display:inline-block; width:2px; background:var(--maroon-dark); height:1em; vertical-align:middle; margin-left:1px; animation:blink 0.9s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  .status-line{
+    display:flex; align-items:center; gap:10px; font-size:0.85rem; color:var(--maroon-dark); margin-top:6px; min-height:20px;
+  }
+  .spinner{
+    width:14px;height:14px;border:2px solid var(--line); border-top-color:var(--red); border-radius:50%;
+    animation:spin 0.7s linear infinite; flex-shrink:0;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .receipt{display:none;}
+  .receipt.active{display:block;}
+  .receipt .amt{font-size:2.1rem; font-weight:800; color:var(--maroon-dark); margin:6px 0;}
+  .receipt .amt.overcharge{color:var(--red);}
+  .receipt .row{display:flex; justify-content:space-between; font-size:0.85rem; padding:6px 0; border-bottom:1px dashed var(--line); color:var(--muted);}
+  .receipt .badge{
+    display:inline-block; background:#fdf3d0; color:var(--maroon-dark); font-size:0.7rem; font-weight:700;
+    padding:4px 10px; border-radius:20px; letter-spacing:0.5px; margin-top:10px;
+  }
+  .receipt .fine{font-size:0.72rem; color:var(--muted); margin-top:16px;}
+  .modal-form{display:none;}
+  .modal-form.active{display:block;}
+  .modal .btn{width:100%; justify-content:center; margin-top:6px;}
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner nav-centered">
+    <div class="brand">
+      <img class="logo-img" src="snr-buns-logo.png" alt="Snr. Buns">
+      <div class="tag">Corporate Sustainability</div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow">A Message From Snr. Buns Corporate</span>
+      <h1>Smarter Restaurants.<span class="sneaky">Powered By AI</span>Efficient Data Center.<br><em>Better Buns.</em></h1>
+      <p class="sub">To keep serving you faster, fresher, and more efficiently, and faster, Snr. Buns is investing in next-generation AI production optimization. We're endlesly expanding the infrastructure that powers it into unused plots of land, straight into the amazon forest where it wont be in the way of your commute! That means new lands, new servers, happy staff, and a fewer trees that need our help. If you want to invest into the brand NEW Snr. Buns data center, not near you, donate 1 dollar to save the tree next to the tree we will cut down.</p>
+      <div class="cta-row">
+        <a href="#program" class="btn btn-primary">🌳 Spare A Tree — $1</a>
+        <a href="#mission" class="btn btn-ghost">Learn About Our Mission</a>
+      </div>
+    </div>
+    <div>
+      <svg class="hero-art" viewBox="0 0 420 340" xmlns="http://www.w3.org/2000/svg">
+        <!-- canopy background -->
+        <ellipse cx="210" cy="270" rx="200" ry="50" fill="#0d271a"/>
+        <!-- distant trees -->
+        <g opacity="0.55">
+          <circle cx="60" cy="220" r="46" fill="#2f7a52"/>
+          <circle cx="120" cy="240" r="38" fill="#2f7a52"/>
+          <circle cx="330" cy="230" r="50" fill="#2f7a52"/>
+          <circle cx="270" cy="250" r="34" fill="#2f7a52"/>
+        </g>
+        <!-- main spared tree -->
+        <rect x="198" y="210" width="16" height="70" rx="4" fill="#7a3b20"/>
+        <circle cx="206" cy="180" r="62" fill="#3a9b6c"/>
+        <circle cx="170" cy="200" r="42" fill="#347f5e"/>
+        <circle cx="245" cy="200" r="42" fill="#347f5e"/>
+        <!-- ribbon tag on tree -->
+        <rect x="196" y="205" width="20" height="14" rx="2" fill="#fdd802"/>
+        <!-- cctv camera pole watching the tree -->
+        <rect x="330" y="120" width="6" height="110" fill="#2a2a28"/>
+        <g transform="translate(300,90)">
+          <rect x="0" y="10" width="60" height="26" rx="8" fill="#2a2a28"/>
+          <circle cx="10" cy="23" r="9" fill="#111"/>
+          <circle cx="10" cy="23" r="4.5" fill="#b20103"/>
+          <rect x="52" y="6" width="10" height="10" rx="2" fill="#b20103"/>
+        </g>
+        <!-- dotted sightline from camera to tree -->
+        <path d="M300 105 L216 175" stroke="#fdd802" stroke-width="2" stroke-dasharray="4 6" opacity="0.8"/>
+        <!-- ground -->
+        <ellipse cx="210" cy="300" rx="180" ry="18" fill="#123524"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="mission">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Why We're Growing</div>
+      <h2>Three Ways We're Investing In Tomorrow</h2>
+      <p>With great burger comes great infrastructure. Here's what your local Snr. Buns is working on behind the scenes, without you even knowing!</p>
+      <p class="quip">We're not "watching you," we're learning from you.</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <svg class="icon" viewBox="0 0 64 64"><rect x="8" y="16" width="48" height="30" rx="4" fill="#fdf3d0" stroke="#b20103" stroke-width="2"/><circle cx="32" cy="31" r="10" fill="#111"/><circle cx="32" cy="31" r="5" fill="#b20103"/><rect x="24" y="48" width="16" height="6" rx="2" fill="#7a3b20"/></svg>
+        <h3>Smarter Service, Powered by You</h3>
+        <p>In-store cameras help our new SNR.-Vision AI learn from you. Collecting your data is endleslly valuable for YOU the customer! Special analytics software can instantly detect what you want, what you could want, what you should want, and who you are deep down. One frame at a time.</p>
+      </div>
+      <div class="card">
+        <svg class="icon" viewBox="0 0 64 64"><rect x="10" y="8" width="44" height="14" rx="2" fill="#fdf3d0" stroke="#b20103" stroke-width="2"/><rect x="10" y="26" width="44" height="14" rx="2" fill="#fdf3d0" stroke="#b20103" stroke-width="2"/><rect x="10" y="44" width="44" height="14" rx="2" fill="#fdf3d0" stroke="#b20103" stroke-width="2"/><circle cx="18" cy="15" r="2" fill="#fdd802"/><circle cx="18" cy="33" r="2" fill="#fdd802"/><circle cx="18" cy="51" r="2" fill="#b20103"/></svg>
+        <h3>Expanding Our Data Center</h3>
+        <p>All that AI needs somewhere to live and it wont be in your back yard this time. We're building new server capacity to keep every restaurant connected, synced, and running smoothly nationwide, 24/7 hours 365 days, non stop. Our new location is so far away from Los Santos it hardly adds to the hum of the city.</p>
+      </div>
+      <div class="card">
+        <svg class="icon" viewBox="0 0 64 64"><path d="M4 32c8-16 48-16 56 0-8 16-48 16-56 0z" fill="#fdf3d0" stroke="#b20103" stroke-width="2"/><circle cx="32" cy="32" r="12" fill="#fdd802"/><circle cx="32" cy="32" r="5.5" fill="#b20103"/><circle cx="28" cy="28" r="2.2" fill="#fffaf0" opacity="0.9"/></svg>
+        <h3>A New Global Campus</h3>
+        <p>Snr. Buns Corporate has acquired land at bottom prices, thats right, investors dont have to foot the bill of this purchase. The land acquired is located deep in the Amazon Rainforest to responsibly support our growing footprint, with community programs like Spare-A-Tree (next to the tree*) along the way.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="program" class="program">
+  <div class="wrap">
+    <div class="program-grid">
+      <div>
+        <div class="kicker" style="color:var(--red);">The Spare-A-Tree Program</div>
+        <h2>Sponsor A Tree Before We Get To It</h2>
+        <p>As we clear ground for our new data center campus, we mark one tree at a time and are generously providing you the option to sponsorship the one next to it. For just $1, you can spare the tree currently in our path, keeping it standing, at least for now.</p>
+        <div class="counter-box">
+          <div class="num" id="treeCounter">8,000</div>
+          <div class="lbl">Trees Spared To Date*</div>
+        </div>
+        <button class="btn btn-primary" id="openDonate">🌳 Spare My Tree — $1</button>
+        <div class="fineprint-note">*Figure reflects lifetime program participation. <a id="openTerms">See Program Terms</a> for details on sponsorship duration. The tree you save will be Saran wrapped and preserved for the time being. (terms of service limit)</div>
+      </div>
+      <div class="program-art">
+        <img src="tree-scene.gif" alt="Animation: two trees are cut and placed on a conveyor belt, a $1 donation comes in, the next tree is wrapped and spared, then the last two trees are cut anyway." loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Community Voices</div>
+      <h2>What Our Investors Are Saying</h2>
+    </div>
+    <div class="t-grid">
+      <div class="t-card">
+        <p class="quote">"I was kidnapped and held at gun point and forced to work here, now i stay willingly!"</p>
+        <div class="who">— Pegasus Partridge, Human Manager</div>
+      </div>
+      <div class="t-card">
+        <p class="quote">"As a blind man, Snr. Buns gave me a job and I can finally enter the orders in through voice id without pissing off the customers, even though its not my fault."</p>
+        <div class="who">— Haymen Lookout, Human Employee #811ND</div>
+      </div>
+      <div class="t-card">
+        <p class="quote">"I got canceled on the internet, but at Snr. Buns i felt welcomed even though it knew all my online activities. Great Customer Service Ai training."</p>
+        <div class="who">— Human Customer</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Questions</div>
+      <h2>Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>What happens to the tree I sponsor?</span><span class="plus">+</span></div>
+      <div class="faq-a"><p>Your sponsored tree is immediately flagged in our system as protected, Saran wrapped to the top, and removed from the active clearing queue for the duration of its Active Sponsorship Window.</p></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>How is my dollar used?</span><span class="plus">+</span></div>
+      <div class="faq-a"><p>Your contribution supports Snr. Buns ongoing infrastructure expansion into data mining and machine learning. Including but not limited to data center hardware, land development, and administrative processing associated with the Spare-A-Tree Program.</p></div>
+    </div>
+
+    <div class="faq-item" id="termsFaq">
+      <div class="faq-q"><span>What are the full Program Terms?</span><span class="plus">+</span></div>
+      <div class="faq-a">
+        <p>We believe in full transparency. Here is the complete legal text TLDR of the Spare-A-Tree Program:</p>
+        <div class="legal">
+          By participating in the Spare-A-Tree Program ("Program"), you acknowledge and agree that your sponsored tree ("Sponsored Growth Asset") is protected under Snr. Buns Adaptive Canopy Prioritization Policy for the duration of its <strong>Active Sponsorship Window</strong>. The Active Sponsorship Window begins immediately upon receipt of payment and concludes automatically upon enrollment of the next Sponsored Growth Asset contributor by a subsequent Program participant, at which time clearing operations may resume in the original service area as necessary to meet Snr. Buns data center expansion timelines. Sponsorship is non-transferable, non-refundable, and does not guarantee permanent preservation of any specific tree, root system, or canopy area. Snr. Buns Corporate thanks you for your commitment to a smarter, greener tomorrow.
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q"><span>Is this a joke?</span><span class="plus">+</span></div>
+      <div class="faq-a"><p>Snr. Buns takes sustainability, service, and shareholder value very seriously. Thank you for your continued trust.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div>© <span id="year"></span> Snr. Buns Corporate. A Division of Snr. Holdings.</div>
+  </div>
+</footer>
+
+<!-- DONATE MODAL -->
+<div class="modal-overlay" id="donateOverlay">
+  <div class="modal">
+    <button class="modal-close" id="closeDonate">✕</button>
+
+    <div class="modal-form active" id="formStep">
+      <h3>Spare-A-Tree Checkout</h3>
+      <div class="proc-sub">Securely processed by TrustPay‑Lite™</div>
+
+      <div class="fake-field">
+        <label>Card Number</label>
+        <div class="box" id="cardField"><span class="cursor"></span></div>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <div class="fake-field" style="flex:1;">
+          <label>Expiry</label>
+          <div class="box" id="expField"><span class="cursor"></span></div>
+        </div>
+        <div class="fake-field" style="flex:1;">
+          <label>CVV</label>
+          <div class="box" id="cvvField"><span class="cursor"></span></div>
+        </div>
+      </div>
+      <div class="fake-field">
+        <label>Cardholder</label>
+        <div class="box" id="nameField"><span class="cursor"></span></div>
+      </div>
+
+      <div class="status-line" id="statusLine" style="visibility:hidden;">
+        <div class="spinner"></div>
+        <span id="statusText">Connecting to secure payment partner…</span>
+      </div>
+
+      <button class="btn btn-primary" id="payBtn" disabled>Waiting for auto-fill…</button>
+    </div>
+
+    <div class="receipt" id="receiptStep">
+      <h3 id="receiptTitle">Payment Successful</h3>
+      <div class="proc-sub">Tree #<span id="treeId"></span> — Status Update</div>
+      <div class="amt" id="chargeAmt">$1.00</div>
+      <div class="row"><span>Merchant</span><span>SNR. BUNS CORP – TREE OPS</span></div>
+      <div class="row"><span>Card</span><span>•••• •••• •••• 4242</span></div>
+      <div class="row"><span>Auth Code</span><span id="authCode"></span></div>
+      <div class="badge" id="statusBadge">TREE SPARED</div>
+      <div class="fine">By completing this transaction you agree to the <a id="openTerms2" style="color:var(--red); text-decoration:underline; cursor:pointer;">Spare-A-Tree Program Terms</a>. This receipt is final.</div>
+      <button class="btn btn-ghost" id="closeReceipt" style="border-color:var(--line); color:var(--maroon-dark); margin-top:16px;">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- TERMS POPUP -->
+<div class="modal-overlay" id="termsPopupOverlay">
+  <div class="modal" style="max-width:360px; text-align:center;">
+    <button class="modal-close" id="closeTermsPopup">✕</button>
+    <h3 style="margin-top:6px;">Program Terms</h3>
+    <p style="color:var(--muted); font-size:0.95rem; margin:14px 0 4px; line-height:1.5;">Please visit your local Snr. Buns for the full program terms.</p>
+    <button class="btn btn-primary" id="closeTermsPopupBtn" style="margin-top:20px;">Got It</button>
+  </div>
+</div>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(item=>{
+  item.querySelector('.faq-q').addEventListener('click', ()=>{
+    item.classList.toggle('open');
+  });
+});
+const termsPopupOverlay = document.getElementById('termsPopupOverlay');
+document.getElementById('openTerms').addEventListener('click', (e)=>{
+  e.preventDefault();
+  termsPopupOverlay.classList.add('active');
+});
+document.getElementById('closeTermsPopup').addEventListener('click', ()=>{
+  termsPopupOverlay.classList.remove('active');
+});
+document.getElementById('closeTermsPopupBtn').addEventListener('click', ()=>{
+  termsPopupOverlay.classList.remove('active');
+});
+termsPopupOverlay.addEventListener('click', (e)=>{
+  if(e.target === termsPopupOverlay) termsPopupOverlay.classList.remove('active');
+});
+
+// live counter flourish — trees get spared AND un-spared (someone else's donation
+// bumps yours off the list), so this wanders up and down instead of only climbing.
+let counterEl = document.getElementById('treeCounter');
+let baseCount = 8000;
+const COUNTER_FLOOR = 5000;
+setInterval(()=>{
+  const delta = Math.floor(Math.random()*25) + 1; // 1-25
+  const direction = Math.random() < 0.5 ? -1 : 1;
+  baseCount = Math.max(COUNTER_FLOOR, baseCount + direction*delta);
+  counterEl.textContent = baseCount.toLocaleString();
+}, 4000);
+
+// DONATE MODAL LOGIC
+const overlay = document.getElementById('donateOverlay');
+const openBtn = document.getElementById('openDonate');
+const closeBtn = document.getElementById('closeDonate');
+const closeReceiptBtn = document.getElementById('closeReceipt');
+const formStep = document.getElementById('formStep');
+const receiptStep = document.getElementById('receiptStep');
+const payBtn = document.getElementById('payBtn');
+const statusLine = document.getElementById('statusLine');
+const statusText = document.getElementById('statusText');
+
+const cardField = document.getElementById('cardField');
+const expField = document.getElementById('expField');
+const cvvField = document.getElementById('cvvField');
+const nameField = document.getElementById('nameField');
+
+function resetModal(){
+  formStep.classList.add('active');
+  receiptStep.classList.remove('active');
+  cardField.innerHTML = '<span class="cursor"></span>';
+  expField.innerHTML = '<span class="cursor"></span>';
+  cvvField.innerHTML = '<span class="cursor"></span>';
+  nameField.innerHTML = '<span class="cursor"></span>';
+  statusLine.style.visibility = 'hidden';
+  statusText.textContent = 'Connecting to secure payment partner…';
+  payBtn.textContent = 'Waiting for auto-fill…';
+  payBtn.disabled = true;
+}
+
+function openModal(){
+  overlay.classList.add('active');
+  resetModal();
+  runAutofill();
+}
+function closeModal(){
+  overlay.classList.remove('active');
+}
+openBtn.addEventListener('click', openModal);
+closeBtn.addEventListener('click', closeModal);
+closeReceiptBtn.addEventListener('click', closeModal);
+overlay.addEventListener('click', (e)=>{ if(e.target === overlay) closeModal(); });
+
+function typeInto(el, text, speed, cb){
+  let i = 0;
+  el.innerHTML = '';
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+  function step(){
+    if(i <= text.length){
+      el.textContent = text.slice(0,i);
+      el.appendChild(cursor);
+      i++;
+      setTimeout(step, speed);
+    } else if(cb){ cb(); }
+  }
+  step();
+}
+
+function runAutofill(){
+  statusLine.style.visibility = 'visible';
+  statusText.textContent = 'Auto-filling secure payment details…';
+  typeInto(cardField, '4242 4242 4242 4242', 28, ()=>{
+    typeInto(expField, '12/29', 45, ()=>{
+      typeInto(cvvField, '•••', 60, ()=>{
+        typeInto(nameField, 'Guest Customer', 30, ()=>{
+          statusText.textContent = 'Details auto-filled. Ready to process.';
+          payBtn.disabled = false;
+          payBtn.textContent = 'Spare My Tree — $1.00';
+        });
+      });
+    });
+  });
+}
+
+payBtn.addEventListener('click', ()=>{
+  payBtn.disabled = true;
+  payBtn.textContent = 'Processing…';
+  statusText.textContent = 'Processing payment. Please do not close this window.';
+
+  setTimeout(()=>{
+    // ~25% chance of an "overcharge"
+    const overcharged = Math.random() < 0.25;
+    let amount;
+    if(overcharged){
+      amount = (Math.random() * (89 - 7) + 7);
+    } else {
+      amount = 1.00;
+    }
+    amount = amount.toFixed(2);
+
+    const amtEl = document.getElementById('chargeAmt');
+    const titleEl = document.getElementById('receiptTitle');
+    const badgeEl = document.getElementById('statusBadge');
+    amtEl.textContent = '$' + amount;
+
+    if(overcharged){
+      amtEl.classList.add('overcharge');
+      titleEl.textContent = 'Payment Successful (Adjusted)';
+      badgeEl.textContent = 'TREE SPARED — FOR NOW';
+    } else {
+      amtEl.classList.remove('overcharge');
+      titleEl.textContent = 'Payment Successful';
+      badgeEl.textContent = 'TREE SPARED';
+    }
+
+    document.getElementById('treeId').textContent = Math.floor(Math.random()*90000 + 10000);
+    document.getElementById('authCode').textContent = 'SB-' + Math.random().toString(36).slice(2,8).toUpperCase();
+
+    formStep.classList.remove('active');
+    receiptStep.classList.add('active');
+
+    baseCount += 1;
+    counterEl.textContent = baseCount.toLocaleString();
+  }, 1600);
+});
+
+document.getElementById('openTerms2').addEventListener('click', ()=>{
+  closeModal();
+  const item = document.getElementById('termsFaq');
+  item.classList.add('open');
+  item.scrollIntoView({behavior:'smooth', block:'center'});
+});
+</script>
+
+</body>
+</html>
