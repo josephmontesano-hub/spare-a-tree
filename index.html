@@ -466,13 +466,27 @@ termsPopupOverlay.addEventListener('click', (e)=>{
 // live counter flourish — trees get spared AND un-spared (someone else's donation
 // bumps yours off the list), so this wanders up and down instead of only climbing.
 let counterEl = document.getElementById('treeCounter');
-let baseCount = 8000;
+const COUNTER_KEY = 'srbTreeCount';
 const COUNTER_FLOOR = 5000;
+let baseCount = 8000;
+try {
+  const saved = localStorage.getItem(COUNTER_KEY);
+  if (saved !== null && !isNaN(parseInt(saved, 10))) {
+    baseCount = parseInt(saved, 10);
+  }
+} catch (e) { /* localStorage unavailable — just use the default */ }
+counterEl.textContent = baseCount.toLocaleString();
+
+function saveCount() {
+  try { localStorage.setItem(COUNTER_KEY, String(baseCount)); } catch (e) {}
+}
+
 setInterval(()=>{
   const delta = Math.floor(Math.random()*25) + 1; // 1-25
   const direction = Math.random() < 0.5 ? -1 : 1;
   baseCount = Math.max(COUNTER_FLOOR, baseCount + direction*delta);
   counterEl.textContent = baseCount.toLocaleString();
+  saveCount();
 }, 4000);
 
 // DONATE MODAL LOGIC
@@ -588,6 +602,7 @@ payBtn.addEventListener('click', ()=>{
 
     baseCount += 1;
     counterEl.textContent = baseCount.toLocaleString();
+    saveCount();
   }, 1600);
 });
 

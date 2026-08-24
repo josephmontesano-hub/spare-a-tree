@@ -55,19 +55,44 @@ Once `git push` finishes without errors, refresh the GitHub repo page in your br
 
 ---
 
-## Part 3: Point spareatree.com at it
+## Part 3: Point spareatree.com at it (GoDaddy)
 
-1. Still in Railway, on your service, go to **Settings → Networking**.
+GoDaddy specifically **does not allow a CNAME record on the bare root domain** (`spareatree.com` with no "www"). So the plan is: the real connection to Railway happens on `www.spareatree.com`, and the bare `spareatree.com` gets redirected to `www.spareatree.com` using GoDaddy's own forwarding feature. End result: both work.
+
+**A. Get the target from Railway**
+
+1. In Railway, on your service, go to **Settings → Networking**.
 2. Click **+ Custom Domain**.
-3. Type `spareatree.com` and click **Add**. Do the same again for `www.spareatree.com` right after — adding both means the site works whether someone types "www" or not.
-4. For each one, Railway shows a target value like `xxxxx.up.railway.app` — keep this tab open.
-5. Open a new tab and log into whichever site you bought **spareatree.com** through, then find its **DNS settings** (sometimes called "DNS Management" or "Manage DNS").
-6. For `www.spareatree.com`: add a **CNAME record** — Host/Name: `www`, Value/Target: the railway.app value Railway gave you for that one.
-7. For the bare `spareatree.com` (no "www"): a plain CNAME record often isn't allowed on the root domain. Look for an option called **ALIAS**, **ANAME**, or "CNAME flattening" and use that instead, pointed at the same railway.app value. If your registrar doesn't offer one of those, it may instead let you forward/redirect the bare domain to `www.spareatree.com` — that works too.
-8. Save your DNS changes. They can take anywhere from a few minutes to a few hours to fully activate.
-9. Once active, Railway automatically issues the HTTPS padlock — nothing else to do.
+3. Type `www.spareatree.com` and click **Add**. (Just this one — not the bare domain.)
+4. Railway shows a target value that looks like `xxxxx.up.railway.app`. Keep this tab open.
 
-**Tell me who you bought spareatree.com through** (GoDaddy, Namecheap, Cloudflare, Squarespace, etc.) and I'll give you the exact click-by-click path for step 7 instead of the generic version above.
+**B. Add the CNAME record in GoDaddy**
+
+1. Go to **dcc.godaddy.com** and sign in.
+2. Click on **spareatree.com** to open its domain settings.
+3. Click the **DNS** tab.
+4. Click **Add New Record**.
+5. Set:
+   - **Type:** `CNAME`
+   - **Name:** `www`
+   - **Value:** the `xxxxx.up.railway.app` value from Railway (paste it without `https://`)
+   - Leave **TTL** at its default.
+6. Click **Save**.
+
+**C. Forward the bare domain to www**
+
+1. Still on the **DNS** tab for spareatree.com, click **Forwarding** (near the top, next to DNS Records).
+2. Click **Add Forwarding**.
+3. Forward type: **Domain**.
+4. Forward to: `www.spareatree.com`
+5. Protocol: **https://**
+6. Forward type: **Permanent (301)**
+7. Leave masking off (masking hides the real URL in the address bar — you don't want that here).
+8. Click **Save**.
+
+That's it. `www.spareatree.com` connects straight to Railway via the CNAME, and typing plain `spareatree.com` redirects visitors to `www.spareatree.com` automatically.
+
+DNS changes can take anywhere from a few minutes to a few hours to fully activate. Once active, Railway automatically issues the HTTPS padlock for `www.spareatree.com` — nothing else to do.
 
 ---
 
