@@ -536,7 +536,7 @@ trackSwitch.addEventListener('change', () => {
   setTimeout(() => {
     trackLabel.textContent = 'AI Tracking: Disabled';
     trackNote.textContent = 'Preference saved.';
-  }, 300);
+  }, 200);
 
   setTimeout(() => {
     trackSwitch.checked = false;
@@ -544,7 +544,7 @@ trackSwitch.addEventListener('change', () => {
     trackNote.textContent = "Hm, that didn't stick.";
     trackSwitch.disabled = false;
     trackBusy = false;
-  }, 1800);
+  }, 900);
 });
 
 // FAQ accordion
