@@ -160,6 +160,19 @@
   }
   .counter-box .num{font-family:'Trebuchet MS',Arial,sans-serif; font-size:2.4rem; font-weight:800; color:var(--red);}
   .counter-box .lbl{font-size:0.8rem; letter-spacing:1px; text-transform:uppercase; color:var(--maroon-dark); opacity:0.7;}
+  .qty-row{display:flex; align-items:center; gap:14px; margin:0 0 20px;}
+  .qty-label{font-weight:700; color:var(--maroon-dark);}
+  .qty-stepper{display:flex; align-items:center; gap:14px; background:rgba(43,6,5,0.08); border:1px solid rgba(43,6,5,0.22); border-radius:24px; padding:5px 8px;}
+  .qty-stepper button{
+    width:30px; height:30px; border-radius:50%; border:none; background:var(--red); color:#fff;
+    font-size:1.15rem; font-weight:800; line-height:1; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:opacity .15s, transform .1s;
+  }
+  .qty-stepper button:hover:not(:disabled){opacity:0.88;}
+  .qty-stepper button:active:not(:disabled){transform:scale(0.92);}
+  .qty-stepper button:disabled{opacity:0.35; cursor:default;}
+  .qty-stepper #qtyVal{min-width:22px; text-align:center; font-weight:800; font-size:1.05rem; color:var(--maroon-dark);}
   .program-art{background:var(--forest-light); border-radius:18px; padding:20px; box-shadow:var(--shadow);}
   .program-art img{width:100%; display:block; border-radius:10px;}
 
@@ -358,12 +371,20 @@
       <div>
         <div class="kicker" style="color:var(--red);">The Spare-A-Tree Program</div>
         <h2>Sponsor A Tree Before We Get To It</h2>
-        <p>As we clear ground for our new data center campus, we mark one tree at a time and are generously providing you the option to sponsorship the one next to it. For just $1, you can spare the tree currently in our path, keeping it standing, at least for now.</p>
+        <p>As we clear ground for our new data center campus, we mark one tree at a time and are generously providing you the option to sponsorship the one next to it. For just $1 per tree, you can spare the trees currently in our path, keeping them standing, at least for now.</p>
         <div class="counter-box">
           <div class="num" id="treeCounter">8,000</div>
           <div class="lbl">Trees Spared To Date*</div>
         </div>
-        <button class="btn btn-primary" id="openDonate">🌳 Spare My Tree — $1</button>
+        <div class="qty-row">
+          <span class="qty-label">Trees to spare:</span>
+          <div class="qty-stepper">
+            <button type="button" id="qtyMinus" aria-label="Fewer trees">−</button>
+            <span id="qtyVal">1</span>
+            <button type="button" id="qtyPlus" aria-label="More trees">+</button>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="openDonate">🌳 Spare 1 Tree — $1</button>
         <div class="fineprint-note">*Figure reflects lifetime program participation. <a id="openTerms">See Program Terms</a> for details on sponsorship duration. The tree you save will be Saran wrapped and preserved for the time being. (terms of service limit)</div>
       </div>
       <div class="program-art">
@@ -474,8 +495,9 @@
 
     <div class="receipt" id="receiptStep">
       <h3 id="receiptTitle">Payment Successful</h3>
-      <div class="proc-sub">Tree #<span id="treeId"></span> — Status Update</div>
+      <div class="proc-sub">Order #<span id="treeId"></span> — Status Update</div>
       <div class="amt" id="chargeAmt">$1.00</div>
+      <div class="row"><span>Trees Spared</span><span id="receiptQty">1</span></div>
       <div class="row"><span>Merchant</span><span>SNR. BUNS CORP – TREE OPS</span></div>
       <div class="row"><span>Card</span><span>•••• •••• •••• 4242</span></div>
       <div class="row"><span>Auth Code</span><span id="authCode"></span></div>
@@ -574,6 +596,23 @@ setInterval(()=>{
 
 // DONATE MODAL LOGIC
 const overlay = document.getElementById('donateOverlay');
+// TREE QUANTITY STEPPER
+const QTY_MIN = 1, QTY_MAX = 20;
+let treeQty = 1;
+const qtyVal = document.getElementById('qtyVal');
+const qtyMinus = document.getElementById('qtyMinus');
+const qtyPlus = document.getElementById('qtyPlus');
+function updateQtyUI(){
+  qtyVal.textContent = treeQty;
+  qtyMinus.disabled = treeQty <= QTY_MIN;
+  qtyPlus.disabled = treeQty >= QTY_MAX;
+  const label = `🌳 Spare ${treeQty} Tree${treeQty > 1 ? 's' : ''} — $${treeQty}`;
+  document.getElementById('openDonate').textContent = label;
+}
+qtyMinus.addEventListener('click', ()=>{ if(treeQty > QTY_MIN){ treeQty--; updateQtyUI(); } });
+qtyPlus.addEventListener('click', ()=>{ if(treeQty < QTY_MAX){ treeQty++; updateQtyUI(); } });
+updateQtyUI();
+
 const openBtn = document.getElementById('openDonate');
 const closeBtn = document.getElementById('closeDonate');
 const closeReceiptBtn = document.getElementById('closeReceipt');
@@ -639,7 +678,7 @@ function runAutofill(){
         typeInto(nameField, 'Guest Customer', 30, ()=>{
           statusText.textContent = 'Details auto-filled. Ready to process.';
           payBtn.disabled = false;
-          payBtn.textContent = 'Spare My Tree — $1.00';
+          payBtn.textContent = `Spare ${treeQty} Tree${treeQty > 1 ? 's' : ''} — $${treeQty}.00`;
         });
       });
     });
@@ -658,23 +697,25 @@ payBtn.addEventListener('click', ()=>{
     if(overcharged){
       amount = (Math.random() * (89 - 7) + 7);
     } else {
-      amount = 1.00;
+      amount = treeQty * 1.00;
     }
     amount = amount.toFixed(2);
 
     const amtEl = document.getElementById('chargeAmt');
     const titleEl = document.getElementById('receiptTitle');
     const badgeEl = document.getElementById('statusBadge');
+    const treeWord = treeQty > 1 ? 'TREES' : 'TREE';
     amtEl.textContent = '$' + amount;
+    document.getElementById('receiptQty').textContent = treeQty;
 
     if(overcharged){
       amtEl.classList.add('overcharge');
       titleEl.textContent = 'Payment Successful (Adjusted)';
-      badgeEl.textContent = 'TREE SPARED — FOR NOW';
+      badgeEl.textContent = `${treeWord} SPARED — FOR NOW`;
     } else {
       amtEl.classList.remove('overcharge');
       titleEl.textContent = 'Payment Successful';
-      badgeEl.textContent = 'TREE SPARED';
+      badgeEl.textContent = `${treeWord} SPARED`;
     }
 
     document.getElementById('treeId').textContent = Math.floor(Math.random()*90000 + 10000);
@@ -683,7 +724,7 @@ payBtn.addEventListener('click', ()=>{
     formStep.classList.remove('active');
     receiptStep.classList.add('active');
 
-    baseCount += 1;
+    baseCount += treeQty;
     counterEl.textContent = baseCount.toLocaleString();
     saveCount();
   }, 1600);
