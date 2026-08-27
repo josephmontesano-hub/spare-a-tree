@@ -37,9 +37,11 @@
   img,svg{display:block;max-width:100%;}
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
 
+  /* Wraps the tracking bar + header so they scroll and stick as one unit */
+  .sticky-top{position:sticky; top:0; z-index:51;}
+
   /* AI TRACKING BAR */
   .track-bar{
-    position:sticky; top:0; z-index:51;
     background:#1c1a15; color:var(--cream);
     font-size:0.72rem;
   }
@@ -71,7 +73,6 @@
 
   /* NAV */
   header.site-nav{
-    position:sticky; top:0; z-index:50;
     background:var(--maroon-dark);
     color:var(--cream);
     box-shadow:0 2px 12px rgba(0,0,0,0.15);
@@ -257,26 +258,28 @@
 </head>
 <body>
 
-<div class="track-bar">
-  <div class="track-bar-inner">
-    <span id="trackLabel">AI Tracking: Enabled</span>
-    <label class="track-switch" title="Opt Out of AI Tracking">
-      <input type="checkbox" id="trackSwitch">
-      <span class="track-slider"></span>
-    </label>
-    <span>Opt Out of AI Tracking</span>
-    <span class="track-note" id="trackNote"></span>
-  </div>
-</div>
-
-<header class="site-nav">
-  <div class="nav-inner nav-centered">
-    <div class="brand">
-      <img class="logo-img" src="snr-buns-logo.png" alt="Snr. Buns">
-      <div class="tag">Corporate Sustainability</div>
+<div class="sticky-top">
+  <div class="track-bar">
+    <div class="track-bar-inner">
+      <span id="trackLabel">AI Tracking: Enabled</span>
+      <label class="track-switch" title="Opt Out of AI Tracking">
+        <input type="checkbox" id="trackSwitch">
+        <span class="track-slider"></span>
+      </label>
+      <span>Opt Out of AI Tracking</span>
+      <span class="track-note" id="trackNote"></span>
     </div>
   </div>
-</header>
+
+  <header class="site-nav">
+    <div class="nav-inner nav-centered">
+      <div class="brand">
+        <img class="logo-img" src="snr-buns-logo.png" alt="Snr. Buns">
+        <div class="tag">Corporate Sustainability</div>
+      </div>
+    </div>
+  </header>
+</div>
 
 <section class="hero">
   <div class="hero-inner">
