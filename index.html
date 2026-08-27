@@ -37,6 +37,36 @@
   img,svg{display:block;max-width:100%;}
   .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
 
+  /* AI TRACKING BAR */
+  .track-bar{
+    position:sticky; top:0; z-index:51;
+    background:#1c1a15; color:var(--cream);
+    font-size:0.72rem;
+  }
+  .track-bar-inner{
+    max-width:1080px; margin:0 auto; padding:7px 24px;
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    flex-wrap:wrap; text-align:center;
+  }
+  .track-status{display:flex; align-items:center; gap:6px; letter-spacing:0.3px;}
+  .track-switch{position:relative; display:inline-block; width:42px; height:23px; flex:none; cursor:pointer;}
+  .track-switch input{position:absolute; opacity:0; width:0; height:0;}
+  .track-slider{
+    position:absolute; inset:0; background:#ff4d4d; border-radius:24px;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,0.25);
+    transition:background .3s;
+  }
+  .track-slider::before{
+    content:''; position:absolute; width:17px; height:17px; left:3px; top:3px;
+    background:#fffaf0; border-radius:50%;
+    box-shadow:0 1px 3px rgba(0,0,0,0.45);
+    transition:transform .3s cubic-bezier(.4,1.4,.6,1);
+  }
+  .track-switch input:checked + .track-slider{background:#3ddc84;}
+  .track-switch input:checked + .track-slider::before{transform:translateX(19px);}
+  .track-switch input:disabled + .track-slider{opacity:0.75; cursor:default;}
+  .track-note{font-size:0.68rem; color:rgba(250,243,226,0.55); font-style:italic;}
+
   /* NAV */
   header.site-nav{
     position:sticky; top:0; z-index:50;
@@ -211,6 +241,18 @@
 </style>
 </head>
 <body>
+
+<div class="track-bar">
+  <div class="track-bar-inner">
+    <span id="trackLabel">AI Tracking: Enabled</span>
+    <label class="track-switch" title="Opt Out of AI Tracking">
+      <input type="checkbox" id="trackSwitch">
+      <span class="track-slider"></span>
+    </label>
+    <span>Opt Out of AI Tracking</span>
+    <span class="track-note" id="trackNote"></span>
+  </div>
+</div>
 
 <header class="site-nav">
   <div class="nav-inner nav-centered">
@@ -456,6 +498,32 @@
 
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
+
+// FAKE "OPT OUT OF AI TRACKING" SWITCH — always slides back to enabled
+const trackSwitch = document.getElementById('trackSwitch');
+const trackLabel = document.getElementById('trackLabel');
+const trackNote = document.getElementById('trackNote');
+let trackBusy = false;
+trackSwitch.addEventListener('change', () => {
+  if (!trackSwitch.checked) return; // only the opt-out direction triggers the gag
+  if (trackBusy) return;
+  trackBusy = true;
+  trackSwitch.disabled = true;
+  trackNote.textContent = '';
+
+  setTimeout(() => {
+    trackLabel.textContent = 'AI Tracking: Disabled';
+    trackNote.textContent = 'Preference saved.';
+  }, 300);
+
+  setTimeout(() => {
+    trackSwitch.checked = false;
+    trackLabel.textContent = 'AI Tracking: Enabled';
+    trackNote.textContent = "Hm, that didn't stick.";
+    trackSwitch.disabled = false;
+    trackBusy = false;
+  }, 1800);
+});
 
 // FAQ accordion
 document.querySelectorAll('.faq-item').forEach(item=>{
